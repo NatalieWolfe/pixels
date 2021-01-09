@@ -12,19 +12,29 @@
   font-family: monospace;
 }
 
-#color-details {
+.split-column {
   & > div {
     width: 50%;
+    padding: 0 5px;
 
     &:first-child {
       border-right: 1px solid #333;
-    }
-
-    &:last-child {
       text-align: end;
     }
   }
+}
 
+#color-sample > div > div {
+  display: inline-block;
+  background-color: #444;
+  border: 1px solid #333;
+  border-radius: 1px;
+  width: 65px;
+  box-shadow: inset 0 0 2px 0 #333;
+  margin: 2px;
+}
+
+#color-details {
   .color-detail {
     margin: 2px;
 

@@ -12,9 +12,10 @@ export class ColorPickerComponent implements OnInit, OnChanges {
 
   @ViewChild('colorGradient', {static: true})
   colorGradient!: ElementRef<HTMLCanvasElement>;
-
   @ViewChild('hueScale', {static: true})
   hueScale!: ElementRef<HTMLCanvasElement>;
+  @ViewChild('pickedColor', {static: true})
+  pickedColor!: ElementRef<HTMLDivElement>;
 
   private gradientContext!: CanvasRenderingContext2D;
   private hueContext!: CanvasRenderingContext2D;
@@ -71,6 +72,7 @@ export class ColorPickerComponent implements OnInit, OnChanges {
   constructor() {}
 
   colorUpdated(): void {
+    this.pickedColor.nativeElement.style.backgroundColor = this.color.toRGB();
     this.picked.emit(this.color);
     this.drawHueScale();
     this.drawHueGradient();
@@ -92,6 +94,7 @@ export class ColorPickerComponent implements OnInit, OnChanges {
       );
     }
     this.hueContext = context;
+    this.pickedColor.nativeElement.style.backgroundColor = this.color.toRGB();
     this.drawHueScale();
     this.drawHueGradient();
   }
