@@ -127,5 +127,8 @@
       }
     }
   },
-  "defaultProject": "pixels"
+  "defaultProject": "pixels",
+  "cli": {
+    "analytics": "4f9cb4ea-aa62-40fd-a1e3-f3ef291219b3"
+  }
 }
