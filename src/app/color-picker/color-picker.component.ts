@@ -1,4 +1,5 @@
-import { AfterContentChecked, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges, ViewChild } from '@angular/core';
+import { FormControl } from '@angular/forms';
 
 import {Color} from '../color';
 
@@ -7,7 +8,7 @@ import {Color} from '../color';
   templateUrl: './color-picker.component.html',
   styleUrls: ['./color-picker.component.less']
 })
-export class ColorPickerComponent implements OnInit, AfterContentChecked {
+export class ColorPickerComponent implements OnInit, OnChanges {
 
   @ViewChild('colorGradient', {static: true})
   colorGradient!: ElementRef<HTMLCanvasElement>;
@@ -19,12 +20,60 @@ export class ColorPickerComponent implements OnInit, AfterContentChecked {
   private hueContext!: CanvasRenderingContext2D;
   private changingHue: boolean = false;
   private changingColor: boolean = false;
-  hue: number;
-  color: Color;
+  private colorFormControl = new FormControl();
 
-  constructor() {
-    this.hue = Math.floor(Math.random() * 360);
-    this.color = Color.fromHSV(this.hue, Math.random(), Math.random());
+  @Input() color!: Color;
+  @Output() picked = new EventEmitter<Color>();
+
+  get r() { return this.color.r; }
+  set r(r: number) {
+    if (r !== this.color.r) {
+      this.color.r = r;
+      this.colorUpdated();
+    }
+  }
+  get g() { return this.color.g; }
+  set g(g: number) {
+    if (g !== this.color.g) {
+      this.color.g = g;
+      this.colorUpdated();
+    }
+  }
+  get b() { return this.color.b; }
+  set b(b: number) {
+    if (b !== this.color.b) {
+      this.color.b = b;
+      this.colorUpdated();
+    }
+  }
+  get h() { return this.color.h; }
+  set h(h: number) {
+    if (h !== this.color.h) {
+      this.color.h = h;
+      this.colorUpdated();
+    }
+  }
+  get s() { return this.color.s; }
+  set s(s: number) {
+    if (s !== this.color.s) {
+      this.color.s = s;
+      this.colorUpdated();
+    }
+  }
+  get v() { return this.color.v; }
+  set v(v: number) {
+    if (v !== this.color.v) {
+      this.color.v = v;
+      this.colorUpdated();
+    }
+  }
+
+  constructor() {}
+
+  colorUpdated(): void {
+    this.picked.emit(this.color);
+    this.drawHueScale();
+    this.drawHueGradient();
   }
 
   ngOnInit(): void {
@@ -43,14 +92,15 @@ export class ColorPickerComponent implements OnInit, AfterContentChecked {
       );
     }
     this.hueContext = context;
+    this.drawHueScale();
+    this.drawHueGradient();
   }
 
-  ngAfterContentChecked(): void {
-    if (this.hue !== this.color.h) {
-      this.hue = this.color.h;
+  ngOnChanges(changes: SimpleChanges): void {
+    if (this.gradientContext && this.hueContext) {
       this.drawHueScale();
+      this.drawHueGradient();
     }
-    this.drawHueGradient();
   }
 
   clearClicks() {
@@ -62,10 +112,12 @@ export class ColorPickerComponent implements OnInit, AfterContentChecked {
     if (this.changingHue) {
       const {y} = this.hueScale.nativeElement.getBoundingClientRect();
       this.color.h = (event.pageY - y) / 256.0 * 360.0;
+      this.colorUpdated();
     } else if (this.changingColor) {
       const {x, y} = this.colorGradient.nativeElement.getBoundingClientRect();
       this.color.s = (event.pageX - x) / 256.0;
       this.color.v = 1 - (event.pageY - y) / 256.0;
+      this.colorUpdated();
     }
   }
 
@@ -73,17 +125,19 @@ export class ColorPickerComponent implements OnInit, AfterContentChecked {
     this.changingColor = true;
     this.color.s = event.offsetX / 256.0;
     this.color.v = 1 - event.offsetY / 256.0;
+    this.colorUpdated();
   }
 
   onHueMouseDown(event: MouseEvent): void {
     this.changingHue = true;
     this.color.h = event.offsetY / 256.0 * 360.0;
+    this.colorUpdated();
   }
 
   private drawHueGradient(): void {
     const hueGradient = this.gradientContext.createLinearGradient(0, 0, 256, 0);
     hueGradient.addColorStop(0, 'white');
-    hueGradient.addColorStop(1, `hsl(${this.hue}deg, 100%, 50%)`);
+    hueGradient.addColorStop(1, `hsl(${this.color.h}deg, 100%, 50%)`);
     this.gradientContext.fillStyle = hueGradient;
     this.gradientContext.fillRect(0, 0, 256, 256);
 
