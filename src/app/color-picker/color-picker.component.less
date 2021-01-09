@@ -1,0 +1,38 @@
+.flex-row {
+  display: flex;
+  flex-direction: row;
+}
+
+.flex-column {
+  display: flex;
+  flex-direction: column;
+}
+
+#color-controls {
+  display: inline-block;
+  padding: 5px;
+
+  canvas {
+    border: 1px solid black;
+    margin: 2px;
+  }
+}
+
+#hex-color {
+  font-family: monospace;
+}
+
+#color-details {
+  & > div {
+    width: 50%;
+  }
+
+  .color-detail {
+    margin: 2px;
+
+    label {
+      width: 10px;
+      display: inline-block;
+    }
+  }
+}

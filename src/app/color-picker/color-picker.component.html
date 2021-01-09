@@ -1,0 +1,39 @@
+<div (mouseup)="clearClicks()" (mouseleave)="clearClicks()" (mousemove)="onMouseMove($event)" id="color-controls" class="flex-column">
+  <div>
+    <canvas #colorGradient (mousedown)="onColorMouseDown($event)" width="255" height="255"></canvas>
+    <canvas #hueScale (mousedown)="onHueMouseDown($event)" width="25" height="255"></canvas>
+  </div>
+  <div>
+    #{{color.toHex()}}
+  </div>
+  <div id="color-details" class="flex-row">
+    <div>
+      <div class="color-detail">
+        <label>r</label>
+        <input type="number" min="0" max="255" step="1" [(ngModel)]="color.r" />
+      </div>
+      <div class="color-detail">
+        <label>g</label>
+        <input type="number" min="0" max="255" step="1" [(ngModel)]="color.g" />
+      </div>
+      <div class="color-detail">
+        <label>b</label>
+        <input type="number" min="0" max="255" step="1" [(ngModel)]="color.b" />
+      </div>
+    </div>
+    <div>
+      <div class="color-detail">
+        <label>h</label>
+        <input type="number" min="0" max="359.999" step="1" [(ngModel)]="color.h" />&deg;
+      </div>
+      <div class="color-detail">
+        <label>s</label>
+        <input type="number" min="0" max="1" step="0.01" [(ngModel)]="color.s" />
+      </div>
+      <div class="color-detail">
+        <label>v</label>
+        <input type="number" min="0" max="1" step="0.01" [(ngModel)]="color.v" />
+      </div>
+    </div>
+  </div>
+</div>
