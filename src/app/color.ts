@@ -105,7 +105,7 @@ export class Color {
   public toHex(): string {
     return (
       this.r << 16 | this.g << 8 | this.b
-    ).toString(16).toUpperCase().padStart(6, '0');
+    ).toString(16).padStart(6, '0');
   }
 
   public toRGB(): string {

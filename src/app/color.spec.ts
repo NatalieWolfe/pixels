@@ -103,4 +103,23 @@ describe('Color', () => {
     expect(c.g).toEqual(96);
     expect(c.b).toEqual(64);
   });
+
+  it('should format to hex', () => {
+    const c = Color.fromHex(0xbada55);
+    expect(c.toHex()).toEqual('bada55');
+    expect(c.toString('hex')).toEqual(c.toHex());
+  });
+
+  it('should format to RGB', () => {
+    const c = Color.fromHex(0xbada55);
+    expect(c.toRGB()).toEqual('rgb(186, 218, 85)');
+    expect(c.toString('rgb')).toEqual(c.toRGB());
+  });
+
+  it('should format to RGBA', () => {
+    const c = Color.fromHex(0xbada55);
+    c.a = 42;
+    expect(c.toRGBA()).toEqual('rgba(186, 218, 85, 42)');
+    expect(c.toString('rgba')).toEqual(c.toRGBA());
+  });
 });
