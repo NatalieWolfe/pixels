@@ -25,6 +25,14 @@
 #color-details {
   & > div {
     width: 50%;
+
+    &:first-child {
+      border-right: 1px solid #333;
+    }
+
+    &:last-child {
+      text-align: end;
+    }
   }
 
   .color-detail {
@@ -33,6 +41,11 @@
     label {
       width: 10px;
       display: inline-block;
+      margin: 0 5px;
+    }
+
+    input {
+      width: 50px;
     }
   }
 }
