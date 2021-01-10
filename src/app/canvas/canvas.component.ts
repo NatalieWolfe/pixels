@@ -103,7 +103,9 @@ export class CanvasComponent implements OnInit {
 
   onCanvasMouseDown(event: MouseEvent): void {
     switch (event.button) {
-      case MouseButton.LEFT: return this.startTool(event);
+      case MouseButton.LEFT:
+      case MouseButton.RIGHT:
+        return this.startTool(event);
       case MouseButton.MIDDLE: return this.startMousePan(event);
     }
   }
@@ -122,6 +124,10 @@ export class CanvasComponent implements OnInit {
     this.state = State.IDLE;
   }
 
+  onContextMenu(event: MouseEvent): void {
+    event.preventDefault();
+  }
+
   private eventToToolOptions(event: MouseEvent): ToolOptions {
     const {x, y} = this.containerElement.nativeElement.getBoundingClientRect();
     const eventX = event.pageX;
@@ -131,7 +137,8 @@ export class CanvasComponent implements OnInit {
         x: Math.floor((eventX - x) / this.zoom),
         y: Math.floor((eventY - y) / this.zoom)
       },
-      color: this.color
+      color: this.color,
+      alt: event.button === MouseButton.RIGHT
     };
   }
 

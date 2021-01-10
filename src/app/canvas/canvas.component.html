@@ -2,7 +2,7 @@
   <div id="canvas" #canvas class="checkerboard">
     <canvas #drawing></canvas>
   </div>
-  <div id="click-zone" (mousedown)="onCanvasMouseDown($event)" (wheel)="onCanvasWheel($event)"></div>
+  <div id="click-zone" (mousedown)="onCanvasMouseDown($event)" (wheel)="onCanvasWheel($event)" (contextmenu)=onContextMenu($event)></div>
   <div class="tool-bar">
     <app-zoom-selector #zoomSelector (select)="updateZoom($event)" [zoom]="zoom"></app-zoom-selector>
   </div>

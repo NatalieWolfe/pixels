@@ -4,6 +4,7 @@ import { Drawing, Position } from "./drawing";
 export type ToolOptions = {
   position: Position;
   color: Color;
+  alt: boolean;
 }
 
 type Icon = 'pencil' | 'eraser';
@@ -19,15 +20,22 @@ export interface Tool {
 export class Pencil implements Tool {
   icon: Icon = 'pencil';
 
-  start(drawing: Drawing, {position, color}: ToolOptions): void {
-    drawing.setColor(position, color);
+  private _eraseMode = false;
+
+  start(drawing: Drawing, {position, color, alt}: ToolOptions): void {
+    this._eraseMode = alt;
+    if (this._eraseMode) drawing.setColor(position, Color.transparent);
+    else drawing.setColor(position, color);
   }
 
   update(drawing: Drawing, {position, color}: ToolOptions): void {
-    drawing.setColor(position, color);
+    if (this._eraseMode) drawing.setColor(position, Color.transparent);
+    else drawing.setColor(position, color);
   }
 
-  end(drawing: Drawing, opts: ToolOptions): void {}
+  end(drawing: Drawing, opts: ToolOptions): void {
+    this._eraseMode = false;
+  }
 }
 
 export class Eraser implements Tool {
