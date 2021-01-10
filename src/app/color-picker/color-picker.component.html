@@ -4,7 +4,7 @@
     <canvas #hueScale (mousedown)="onHueMouseDown($event)" width="25" height="255"></canvas>
   </div>
   <div id="color-sample" class="split-column flex-row">
-    <div><div>#{{color.toHex()}}</div></div>
+    <div><div id="hex-color">#{{color.toHex()}}</div></div>
     <div><div #pickedColor>&nbsp;</div></div>
   </div>
   <div id="color-details" class="split-column flex-row">
