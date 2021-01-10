@@ -3,6 +3,6 @@
     <app-color-picker [color]="color" (picked)="onColorPicked($event)"></app-color-picker>
   </div>
   <div id="drawing">
-
+    <app-canvas [width]="64" [height]="64" [color]="color" [tool]="tool"></app-canvas>
   </div>
 </div>

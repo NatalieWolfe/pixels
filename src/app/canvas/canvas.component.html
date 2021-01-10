@@ -1,0 +1,13 @@
+<div id="canvas-frame" #frame (mouseup)="onMouseRelease($event)" (mouseleave)="onMouseRelease($event)" (mousemove)="onCanvasDrag($event)">
+  <div id="canvas" #canvas class="checkerboard">
+    <canvas #drawing></canvas>
+  </div>
+  <div id="click-zone" (mousedown)="onCanvasMouseDown($event)" (wheel)="onCanvasWheel($event)"></div>
+  <div class="tool-bar">
+    <select (change)="updateZoom()" [(ngModel)]="zoom">
+      <option *ngFor="let z of zoomLevels" [ngValue]="z.zoom">
+        {{z.name}}
+      </option>
+    </select>
+  </div>
+</div>

@@ -1,0 +1,76 @@
+#canvas-frame {
+  height: 100%;
+  width: 100%;
+  position: relative;
+  overflow: hidden;
+}
+
+.tool-bar {
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+  background-color: rgba(119, 119, 119, 0.6);
+  padding: 2px;
+  border-bottom: 1px solid #333;
+  box-shadow: 0 0 5px 0 #444;
+}
+
+#click-zone {
+  position: absolute;
+  top: 25px;
+  right: 0;
+  left: 0;
+  bottom: 0;
+}
+
+#canvas {
+  position: absolute;
+  border: 1px solid #333;
+  box-shadow: 0 0 5px 0 #444;
+
+  --canvas-width: 64px;
+  --canvas-height: 64px;
+  --canvas-zoom: 10;
+  --pixel-size: calc(1px * var(--canvas-zoom));
+  --top-offset: calc(50% - (var(--canvas-height) * var(--canvas-zoom) / 2));
+  --left-offset: calc(50% - (var(--canvas-width) * var(--canvas-zoom) / 2));
+
+  top: var(--top-offset);
+  left: var(--left-offset);
+  width: calc(var(--canvas-height) * var(--canvas-zoom));
+  height: calc(var(--canvas-width) * var(--canvas-zoom));
+
+  background-color: #777;
+
+  &.grid {
+    border-right: none;
+    border-bottom: none;
+    background-image: repeating-linear-gradient(
+      90deg,
+     transparent 0,transparent calc(var(--pixel-size) - 1px),
+      #333 calc(var(--pixel-size) - 1px), #333 var(--pixel-size),
+     transparent var(--pixel-size)
+    ), repeating-linear-gradient(
+      180deg,
+     transparent 0,transparent calc(var(--pixel-size) - 1px),
+      #333 calc(var(--pixel-size) - 1px), #333 var(--pixel-size),
+     transparent var(--pixel-size)
+    );
+  }
+
+  &.checkerboard {
+    background-image:
+      linear-gradient(45deg, #666 25%, transparent 25%),
+      linear-gradient(-45deg, #666 25%, transparent 25%),
+      linear-gradient(45deg, transparent 75%, #666 75%),
+      linear-gradient(-45deg, transparent 75%, #666 75%);
+
+    background-size: calc(var(--pixel-size) * 2) calc(var(--pixel-size) * 2);
+    background-position:
+      0 0,
+      0 var(--pixel-size),
+      var(--pixel-size) calc(var(--pixel-size) * -1),
+      calc(var(--pixel-size) * -1) 0px;
+  }
+}

@@ -5,12 +5,14 @@ import { BrowserModule } from '@angular/platform-browser';
 import { AppComponent } from './app.component';
 import { ColorPickerComponent } from './color-picker/color-picker.component';
 import { EditorComponent } from './editor/editor.component';
+import { CanvasComponent } from './canvas/canvas.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     EditorComponent,
-    ColorPickerComponent
+    ColorPickerComponent,
+    CanvasComponent
   ],
   imports: [
     BrowserModule,
