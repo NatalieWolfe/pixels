@@ -56,8 +56,12 @@ export class Drawing {
   }
 
   private _drawPixel(position: Position, color: Color) {
-    this._context.fillStyle = color.toRGBA();
-    this._context.fillRect(position.x, position.y, 1, 1);
+    if (color.a) {
+      this._context.fillStyle = color.toRGBA();
+      this._context.fillRect(position.x, position.y, 1, 1);
+    } else {
+      this._context.clearRect(position.x, position.y, 1, 1);
+    }
   }
 
   private _clear(): void {
