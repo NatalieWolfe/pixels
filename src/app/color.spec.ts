@@ -118,8 +118,8 @@ describe('Color', () => {
 
   it('should format to RGBA', () => {
     const c = Color.fromHex(0xbada55);
-    c.a = 42;
-    expect(c.toRGBA()).toEqual('rgba(186, 218, 85, 42)');
+    c.a = 0.42;
+    expect(c.toRGBA()).toEqual('rgba(186, 218, 85, 0.42)');
     expect(c.toString('rgba')).toEqual(c.toRGBA());
   });
 });

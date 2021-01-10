@@ -6,6 +6,14 @@ export type ColorLiteral = {
   a?: number;
 }
 
+function bound(x: number, min: number, max: number): number {
+  return Math.max(min, Math.min(max, x));
+}
+
+function boundFloat(x: number, min: number, max: number): number {
+  return Math.round(bound(x, min, max) * 1000) / 1000;
+}
+
 export class Color {
   public get r(): number { return this._r; }
   public get g(): number { return this._g; }
@@ -16,30 +24,30 @@ export class Color {
   public get v(): number { return this._v; }
 
   public set r(r: number) {
-    this._r = Math.max(0, Math.min(255, Math.round(r)));
+    this._r = bound(r, 0, 255);
     this._calculateHSV();
   }
   public set g(g: number) {
-    this._g = Math.max(0, Math.min(255, Math.round(g)));
+    this._g = bound(g, 0, 255);
     this._calculateHSV();
   }
   public set b(b: number) {
-    this._b = Math.max(0, Math.min(255, Math.round(b)));
+    this._b = bound(b, 0, 255);
     this._calculateHSV();
   }
   public set a(a: number) {
-    this._a = Math.max(0, Math.min(255, Math.round(a)));
+    this._a = boundFloat(a, 0, 1);
   }
   public set h(h: number) {
-    this._h = Math.max(0, Math.min(359.999, Math.round(h)));
+    this._h = boundFloat(h, 0, 359.999);
     this._calculateRGB();
   }
   public set s(s: number) {
-    this._s = Math.round(Math.max(0, Math.min(1, s)) * 1000) / 1000;
+    this._s = boundFloat(s, 0, 1);
     this._calculateRGB();
   }
   public set v(v: number) {
-    this._v = Math.round(Math.max(0, Math.min(1, v)) * 1000) / 1000;
+    this._v = boundFloat(v, 0, 1);
     this._calculateRGB();
   }
 
@@ -63,6 +71,8 @@ export class Color {
   static fromHSV(hue: number, saturation: number, value: number): Color {
     return new Color(Color.HSVToRGB(hue, saturation, value));
   }
+
+  static readonly transparent: Color = new Color({r: 0, g: 0, b: 0, a: 0});
 
   static HSVToRGB(h: number, s: number, v: number): ColorLiteral {
     const c = s * v;
@@ -94,7 +104,7 @@ export class Color {
   }
 
   constructor({r, g, b, a}: ColorLiteral) {
-    this._r = 0; this._g = 0; this._b = 0; this._a = 255;
+    this._r = 0; this._g = 0; this._b = 0; this._a = 1;
 
     this.r = r;
     this.g = g;
