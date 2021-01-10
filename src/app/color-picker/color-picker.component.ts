@@ -72,7 +72,10 @@ export class ColorPickerComponent implements OnInit, OnChanges {
   constructor() {}
 
   colorUpdated(): void {
-    this.pickedColor.nativeElement.style.backgroundColor = this.color.toRGB();
+    this.pickedColor.nativeElement.style.setProperty(
+      '--picked-color',
+      this.color.toRGB()
+    );
     this.picked.emit(this.color);
     this.drawHueScale();
     this.drawHueGradient();
@@ -94,7 +97,10 @@ export class ColorPickerComponent implements OnInit, OnChanges {
       );
     }
     this.hueContext = context;
-    this.pickedColor.nativeElement.style.backgroundColor = this.color.toRGB();
+    this.pickedColor.nativeElement.style.setProperty(
+      '--picked-color',
+      this.color.toRGB()
+    );
     this.drawHueScale();
     this.drawHueGradient();
   }
