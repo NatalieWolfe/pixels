@@ -1,4 +1,3 @@
-import { CONTEXT_NAME } from "@angular/compiler/src/render3/view/util";
 import { ElementRef } from "@angular/core";
 
 import { Color } from "./color";
@@ -16,19 +15,18 @@ export class Drawing {
   private _context: CanvasRenderingContext2D;
   private _pixels = new Map<number, Map<number, Color>>();
 
+  get zoom() { return this._zoom; }
   set zoom(zoom: number) {
+    this._zoom = zoom;
     const canvas = this.canvas.nativeElement;
     canvas.width = this.width * zoom;
     canvas.height = this.height * zoom;
     this._context.setTransform(1, 0, 0, 1, 0, 0);
     this._context.scale(zoom, zoom);
 
-    for (const [y, row] of this._pixels) {
-      for (const [x, color] of row) {
-        this._drawPixel({x, y}, color);
-      }
-    }
+    this._drawPixelsTo(this._context);
   }
+  private _zoom!: number;
 
   constructor(width: number, height: number, zoom: number, canvas: ElementRef<HTMLCanvasElement>) {
     this.width = Math.floor(width);
@@ -53,6 +51,21 @@ export class Drawing {
       row.set(position.x, new Color(color));
     }
     this._drawPixel(position, color);
+  }
+
+  renderTo(canvas: ElementRef<HTMLCanvasElement>, zoom?: number) {
+    zoom = zoom || this.zoom;
+    const drawing = new Drawing(this.width, this.height, zoom, canvas);
+    this._drawPixelsTo(drawing._context);
+  }
+
+  private _drawPixelsTo(context: CanvasRenderingContext2D) {
+    for (const [y, row] of this._pixels) {
+      for (const [x, color] of row) {
+        context.fillStyle = color.toRGBA();
+        context.fillRect(x, y, 1, 1);
+      }
+    }
   }
 
   private _drawPixel(position: Position, color: Color) {
