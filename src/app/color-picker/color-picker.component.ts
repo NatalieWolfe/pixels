@@ -21,7 +21,6 @@ export class ColorPickerComponent implements OnInit, OnChanges {
   private hueContext!: CanvasRenderingContext2D;
   private changingHue: boolean = false;
   private changingColor: boolean = false;
-  private colorFormControl = new FormControl();
 
   @Input() color!: Color;
   @Output() picked = new EventEmitter<Color>();

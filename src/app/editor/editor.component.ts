@@ -11,6 +11,7 @@ import { Tool, toolList } from '../tools';
 export class EditorComponent implements OnInit {
   color: Color;
   tool: Tool;
+  readonly tools = toolList;
 
   constructor() {
     this.color =
@@ -20,6 +21,10 @@ export class EditorComponent implements OnInit {
 
   onColorPicked(color: Color) {
     this.color = color;
+  }
+
+  activateTool(tool: Tool): void {
+    this.tool = tool;
   }
 
   ngOnInit(): void {

@@ -6,13 +6,15 @@ import { AppComponent } from './app.component';
 import { ColorPickerComponent } from './color-picker/color-picker.component';
 import { EditorComponent } from './editor/editor.component';
 import { CanvasComponent } from './canvas/canvas.component';
+import { ToolButtonComponent } from './tool-button/tool-button.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     EditorComponent,
     ColorPickerComponent,
-    CanvasComponent
+    CanvasComponent,
+    ToolButtonComponent
   ],
   imports: [
     BrowserModule,

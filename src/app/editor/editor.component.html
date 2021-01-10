@@ -1,6 +1,7 @@
 <div id="editor">
   <div id="tool-panel">
     <app-color-picker [color]="color" (picked)="onColorPicked($event)"></app-color-picker>
+    <app-tool-button *ngFor="let t of tools" [tool]="t" [active]="this.tool === t" (activate)="activateTool(t)"></app-tool-button>
   </div>
   <div id="drawing">
     <app-canvas [width]="64" [height]="64" [color]="color" [tool]="tool"></app-canvas>
