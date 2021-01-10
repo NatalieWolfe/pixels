@@ -1,4 +1,4 @@
-<div id="editor">
+<div id="editor" (keypress)="onKeyPressed($event)" tabindex="0">
   <div id="tool-panel">
     <app-color-picker [color]="color" (picked)="onColorPicked($event)"></app-color-picker>
     <app-tool-button *ngFor="let t of tools" [tool]="t" [active]="this.tool === t" (activate)="activateTool(t)"></app-tool-button>
