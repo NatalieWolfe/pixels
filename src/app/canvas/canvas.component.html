@@ -4,10 +4,6 @@
   </div>
   <div id="click-zone" (mousedown)="onCanvasMouseDown($event)" (wheel)="onCanvasWheel($event)"></div>
   <div class="tool-bar">
-    <select (change)="updateZoom()" [(ngModel)]="zoom">
-      <option *ngFor="let z of zoomLevels" [ngValue]="z.zoom">
-        {{z.name}}
-      </option>
-    </select>
+    <app-zoom-selector #zoomSelector (select)="updateZoom($event)" [zoom]="zoom"></app-zoom-selector>
   </div>
 </div>

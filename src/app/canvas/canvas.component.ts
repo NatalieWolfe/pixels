@@ -3,11 +3,7 @@ import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
 import { Color } from '../color';
 import { Drawing, Position } from '../drawing';
 import { Tool, ToolOptions } from '../tools';
-
-type ZoomLevel = {
-  name: string;
-  zoom: number;
-};
+import { ZoomSelectorComponent } from '../zoom-selector/zoom-selector.component';
 
 enum MouseButton {
   LEFT = 0,
@@ -33,26 +29,17 @@ export class CanvasComponent implements OnInit {
   containerElement!: ElementRef<HTMLDivElement>;
   @ViewChild('drawing', {static: true})
   canvasElement!: ElementRef<HTMLCanvasElement>;
+  @ViewChild('zoomSelector')
+  zoomSelector!: ZoomSelectorComponent;
 
   @Input() width!: number;
   @Input() height!: number;
   @Input() tool!: Tool;
   @Input() color!: Color;
 
-  readonly zoomLevels: ZoomLevel[] = [
-    {name: '1:1', zoom: 1},
-    {name: '2:1', zoom: 2},
-    {name: '4:1', zoom: 4},
-    {name: '6:1', zoom: 6},
-    {name: '8:1', zoom: 8},
-    {name: '10:1', zoom: 10},
-    {name: '12:1', zoom: 12},
-    {name: '15:1', zoom: 15},
-    {name: '20:1', zoom: 20}
-  ];
   zoom: number = 10;
+  drawing!: Drawing;
 
-  private drawing!: Drawing;
   private state: State = State.IDLE;
   private mousePanStart = {
     mouse: {x: 0, y: 0} as Position,
@@ -76,12 +63,16 @@ export class CanvasComponent implements OnInit {
     this.canvasPosition.y = y - parent.y;
   }
 
-  updateZoom(): void {
+  updateZoom(zoom: number): void {
+    this.zoom = zoom;
     this.containerElement.nativeElement.style.setProperty(
       '--canvas-zoom',
       this.zoom.toString()
     );
     this.drawing.zoom = this.zoom;
+
+    // TODO(alaina): Update the position of the canvas to keep the mouse over
+    // the same pixel from the drawing.
 
     const parent = this.frameElement.nativeElement.getBoundingClientRect();
     const {x, y} = this.containerElement.nativeElement.getBoundingClientRect();
@@ -90,22 +81,8 @@ export class CanvasComponent implements OnInit {
   }
 
   onCanvasWheel(event: WheelEvent): void {
-    let zoomIndex = 0;
-    for (let i = 0; i < this.zoomLevels.length; ++i) {
-      if (this.zoomLevels[i].zoom === this.zoom) {
-        zoomIndex = i;
-        break;
-      }
-    }
-    if (event.deltaY > 0) --zoomIndex;
-    if (event.deltaY < 0) ++zoomIndex;
-    if (zoomIndex < 0 || zoomIndex >= this.zoomLevels.length) return;
-
-    // TODO(alaina): Update the position of the canvas to keep the mouse over
-    // the same pixel from the drawing.
-
-    this.zoom = this.zoomLevels[zoomIndex].zoom;
-    this.updateZoom();
+    if (event.deltaY > 0) this.zoomSelector.decrease();
+    if (event.deltaY < 0) this.zoomSelector.increase();
 }
 
   onCanvasMouseDown(event: MouseEvent): void {

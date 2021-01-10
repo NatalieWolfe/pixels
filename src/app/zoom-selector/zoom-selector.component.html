@@ -1,0 +1,5 @@
+<select [(ngModel)]="zoom">
+  <option *ngFor="let z of zoomLevels" [ngValue]="z.zoom">
+    {{z.name}}
+  </option>
+</select>
