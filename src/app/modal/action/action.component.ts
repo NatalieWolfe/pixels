@@ -1,7 +1,7 @@
 import { Component, Input, OnInit, Output } from '@angular/core';
 
 @Component({
-  selector: 'app-modal-action',
+  selector: 'modal-action',
   templateUrl: './action.component.html',
   styleUrls: ['./action.component.less']
 })

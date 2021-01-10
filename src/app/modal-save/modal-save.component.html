@@ -1,5 +1,5 @@
 <div class="modal {{displayState}}">
-  <app-modal-header [title]="'Save'" (close)="hide()"></app-modal-header>
+  <modal-header [title]="'Save'" (close)="hide()"></modal-header>
   <div class="modal-body">
     <ul>
       <li>
@@ -15,7 +15,7 @@
     </ul>
   </div>
   <div class="modal-footer">
-    <app-modal-action [action]="'download'" (click)="download()"></app-modal-action>
+    <modal-action [action]="'download'" (click)="download()"></modal-action>
   </div>
 </div>
 <div class="hidden">

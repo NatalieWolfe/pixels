@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 
 @Component({
-  selector: 'app-modal-header',
+  selector: 'modal-header',
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.less']
 })
