@@ -27,7 +27,7 @@ export class ModalSaveComponent implements OnInit {
 
   modal = new ModalController();
   fileName: string = 'sprite.png';
-  zoom: number = 4;
+  zoom: number = 1;
 
   get fileType(): FileType { return this._fileType; }
   set fileType(fileType: FileType) {
