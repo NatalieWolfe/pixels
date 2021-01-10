@@ -1,7 +1,7 @@
 import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
 
 import { Color } from '../color';
-import { Drawing, Position } from '../drawing';
+import { Dimensions, Drawing, Position } from '../drawing';
 import { Tool, ToolOptions } from '../tools';
 import { ZoomSelectorComponent } from '../zoom-selector/zoom-selector.component';
 
@@ -32,10 +32,22 @@ export class CanvasComponent implements OnInit {
   @ViewChild('zoomSelector')
   zoomSelector!: ZoomSelectorComponent;
 
-  @Input() width!: number;
-  @Input() height!: number;
   @Input() tool!: Tool;
   @Input() color!: Color;
+  @Input()
+  get dimensions(): Dimensions { return this._dimensions; }
+  set dimensions(dimensions: Dimensions) {
+    if (
+      this._dimensions &&
+      dimensions.width === this._dimensions.width &&
+      dimensions.height === this._dimensions.height
+    ) {
+      return;
+    }
+    this._dimensions = dimensions;
+    this.reset();
+  }
+  private _dimensions!: Dimensions;
 
   zoom: number = 10;
   drawing!: Drawing;
@@ -50,11 +62,15 @@ export class CanvasComponent implements OnInit {
   constructor() {}
 
   ngOnInit(): void {
-    this.drawing = new Drawing(this.width, this.height, this.zoom, this.canvasElement);
+    this.reset();
+  }
+
+  reset() {
+    this.drawing = new Drawing(this.dimensions, this.zoom, this.canvasElement);
 
     const style = this.containerElement.nativeElement.style;
-    style.setProperty('--canvas-width', `${this.width}px`);
-    style.setProperty('--canvas-height', `${this.height}px`);
+    style.setProperty('--canvas-width', `${this.dimensions.width}px`);
+    style.setProperty('--canvas-height', `${this.dimensions.height}px`);
     style.setProperty('--canvas-zoom', this.zoom.toString());
 
     const parent = this.frameElement.nativeElement.getBoundingClientRect();

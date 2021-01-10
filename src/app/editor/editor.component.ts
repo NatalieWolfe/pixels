@@ -2,6 +2,10 @@ import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 
 import { CanvasComponent } from '../canvas/canvas.component';
 import { Color } from '../color';
+import { Dimensions } from '../drawing';
+import { KeyBinding } from '../key-binding';
+import { ModalController } from '../modal-controller';
+import { ModalNewComponent } from '../modal-new/modal-new.component';
 import { ModalSaveComponent } from '../modal-save/modal-save.component';
 import { Tool, toolList } from '../tools';
 
@@ -10,11 +14,6 @@ const TOOL_KEY_LAYOUT = [
   'KeyA', 'KeyS', 'KeyD', 'KeyF',
   'KeyZ', 'KeyX', 'KeyC', 'KeyV'
 ];
-
-type Modal = {
-  display: () => void;
-  hide: () => void;
-};
 
 @Component({
   selector: 'app-editor',
@@ -26,49 +25,66 @@ export class EditorComponent implements OnInit {
   canvas!: CanvasComponent;
   @ViewChild('saveModal', {static: true})
   saveModal!: ModalSaveComponent;
+  @ViewChild('newModal', {static: true})
+  newModal!: ModalNewComponent;
 
+  dimensions!: Dimensions;
   color: Color;
   tool: Tool;
   readonly tools = toolList;
 
-  private toolMap = new Map<string, Tool>();
-  private commandMap = new Map<string, () => void>();
-  private activeModal: Modal | null = null;
+  private keyBindings = new KeyBinding();
+  private activeModal?: ModalController;
 
   constructor() {
     this.color =
       Color.fromHSV(Math.random() * 360, Math.random(), Math.random());
     this.tool = toolList[0];
     for (let i = 0; i < toolList.length; ++i) {
-      this.toolMap.set(TOOL_KEY_LAYOUT[i], toolList[i]);
+      this.keyBindings.set({code: TOOL_KEY_LAYOUT[i]}, toolList[i]);
     }
-    this.commandMap.set('KeyS', this.save);
+
+    this.keyBindings.set({ctrlKey: true, code: 'KeyN'}, this.openNew);
+    this.keyBindings.set({altKey: true, code: 'KeyN'}, this.openNew);
+    this.keyBindings.set({ctrlKey: true, code: 'KeyS'}, this.openSave);
+    this.keyBindings.set({ctrlKey: true, code: 'KeyR'}, this.resetCanvas);
   }
 
   ngOnInit(): void {
+    this.dimensions = {width: 64, height: 64};
   }
 
   onColorPicked(color: Color) {
     this.color = color;
   }
 
+  onNewDrawing(dimensions: Dimensions) {
+    console.log(dimensions);
+    this.dimensions = dimensions;
+    this.resetCanvas();
+  }
+
   onKeyDown(event: KeyboardEvent): void {
-    if ((event.ctrlKey || event.metaKey) && this.commandMap.has(event.code)) {
-      this.onKeyPressed(event);
-    }
+    // Control combinations require interception on key-down.
+    if (event.ctrlKey || event.altKey) this.onKeyPressed(event);
   }
 
   onKeyPressed(event: KeyboardEvent): void {
-    if (event.ctrlKey || event.metaKey) {
-      event.preventDefault();
-      const command = this.commandMap.get(event.code);
-      if (command) command.call(this);
-    } else if (
-      event.target instanceof HTMLElement &&
-      event.target.id == "editor"
+    const command = this.keyBindings.get(event);
+    if (
+      !command || (
+        !event.ctrlKey &&
+        !(event.target instanceof HTMLElement && event.target.id === 'editor')
+      )
     ) {
-      const tool = this.toolMap.get(event.code);
-      if (tool) this.tool = tool;
+      return;
+    }
+    event.preventDefault();
+
+    if (typeof command === 'function') {
+      command.call(this);
+    } else {
+      this.tool = command;
     }
   }
 
@@ -76,11 +92,27 @@ export class EditorComponent implements OnInit {
     this.tool = tool;
   }
 
-  save() {
-    this.activateModal(this.saveModal);
+  closeModal(modal?: ModalController) {
+    modal = modal || this.activeModal;
+    if (modal) {
+      if (modal === this.activeModal) delete this.activeModal;
+      modal.hide()
+    };
   }
 
-  private activateModal(modal: Modal) {
+  openSave() {
+    this.activateModal(this.saveModal.modal);
+  }
+
+  openNew() {
+    this.activateModal(this.newModal.modal);
+  }
+
+  resetCanvas() {
+    this.canvas.reset();
+  }
+
+  private activateModal(modal: ModalController) {
     if (this.activeModal) this.activeModal.hide();
     modal.display();
     this.activeModal = modal;

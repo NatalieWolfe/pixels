@@ -1,0 +1,18 @@
+<div class="modal {{modal.displayState}}">
+  <modal-header [title]="'New'" [controller]="modal"></modal-header>
+  <div class="modal-body">
+    <ul class="modal-form">
+      <li>
+        <label>Width</label>
+        <input type="number" step="1" min="0" [(ngModel)]="width" />
+      </li>
+      <li>
+        <label>Height</label>
+        <input type="number" step="1" min="0" [(ngModel)]="height" />
+      </li>
+    </ul>
+  </div>
+  <div class="modal-footer">
+    <modal-action [action]="'create'" (click)="onCreate()"></modal-action>
+  </div>
+</div>

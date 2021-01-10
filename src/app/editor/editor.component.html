@@ -4,9 +4,10 @@
     <app-tool-button *ngFor="let t of tools" [tool]="t" [active]="this.tool === t" (activate)="activateTool(t)"></app-tool-button>
   </div>
   <div id="drawing">
-    <app-canvas #canvas [width]="64" [height]="64" [color]="color" [tool]="tool"></app-canvas>
+    <app-canvas #canvas [dimensions]="dimensions" [color]="color" [tool]="tool"></app-canvas>
   </div>
 </div>
-<div class="modal-container">
+<div class="modal-container" (modalClose)="closeModal()">
   <app-modal-save #saveModal [drawing]="canvas.drawing"></app-modal-save>
+  <app-modal-new #newModal (create)="onNewDrawing($event)"></app-modal-new>
 </div>

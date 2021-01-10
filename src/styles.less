@@ -54,6 +54,27 @@ input {
     border-radius: 2px;
     background-color: #444;
     box-shadow: 1px 1px 5px 0 #333;
+
+    & .modal-body {
+      position: relative;
+
+      & ul.modal-form {
+        list-style: none;
+
+        & > li {
+          margin: 2px 0;
+
+          & label {
+            display: inline-block;
+            width: 50px;
+          }
+
+          & input {
+            width: 150px;
+          }
+        }
+      }
+    }
   }
 
   & .hidden {

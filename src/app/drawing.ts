@@ -2,6 +2,11 @@ import { ElementRef } from "@angular/core";
 
 import { Color } from "./color";
 
+export type Dimensions = {
+  width: number,
+  height: number
+};
+
 export type Position = {
   x: number,
   y: number
@@ -13,7 +18,7 @@ export class Drawing {
   readonly canvas: ElementRef<HTMLCanvasElement>;
 
   private _context: CanvasRenderingContext2D;
-  private _pixels = new Map<number, Map<number, Color>>();
+  private _pixels!: Map<number, Map<number, Color>>;
 
   get zoom() { return this._zoom; }
   set zoom(zoom: number) {
@@ -28,14 +33,18 @@ export class Drawing {
   }
   private _zoom!: number;
 
-  constructor(width: number, height: number, zoom: number, canvas: ElementRef<HTMLCanvasElement>) {
+  constructor(
+    {width, height}: Dimensions,
+    zoom: number,
+    canvas: ElementRef<HTMLCanvasElement>
+  ) {
     this.width = Math.floor(width);
     this.height = Math.floor(height);
     this.canvas = canvas;
     this._context = canvas.nativeElement.getContext('2d')!;
 
-    this.zoom = zoom;
     this._clear();
+    this.zoom = zoom;
   }
 
   setColor(position: Position, color: Color): void {
@@ -55,7 +64,7 @@ export class Drawing {
 
   renderTo(canvas: ElementRef<HTMLCanvasElement>, zoom?: number) {
     zoom = zoom || this.zoom;
-    const drawing = new Drawing(this.width, this.height, zoom, canvas);
+    const drawing = new Drawing(this, zoom, canvas);
     this._drawPixelsTo(drawing._context);
   }
 
@@ -78,6 +87,7 @@ export class Drawing {
   }
 
   private _clear(): void {
+    this._pixels = new Map<number, Map<number, Color>>();
     this._context.clearRect(0, 0, this.width, this.height);
   }
 }

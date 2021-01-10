@@ -1,22 +1,21 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { CanvasComponent } from './canvas.component';
+import { ModalNewComponent } from './modal-new.component';
 
-describe('CanvasComponent', () => {
-  let component: CanvasComponent;
-  let fixture: ComponentFixture<CanvasComponent>;
+describe('ModalNewComponent', () => {
+  let component: ModalNewComponent;
+  let fixture: ComponentFixture<ModalNewComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ CanvasComponent ]
+      declarations: [ ModalNewComponent ]
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(CanvasComponent);
+    fixture = TestBed.createComponent(ModalNewComponent);
     component = fixture.componentInstance;
-    component.dimensions = {width: 64, height: 64};
     fixture.detectChanges();
   });
 

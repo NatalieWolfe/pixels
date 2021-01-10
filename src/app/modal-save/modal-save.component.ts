@@ -1,5 +1,6 @@
 import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
 import { Drawing } from '../drawing';
+import { ModalController } from '../modal-controller';
 
 type FileType = {
   mime: string;
@@ -24,7 +25,7 @@ export class ModalSaveComponent implements OnInit {
     {mime: 'image/jpeg', extension: '.jpg'}
   ];
 
-  displayState: '' | 'hidden' = 'hidden';
+  modal = new ModalController();
   fileName: string = 'sprite.png';
   zoom: number = 4;
 
@@ -46,14 +47,6 @@ export class ModalSaveComponent implements OnInit {
 
   ngOnInit(): void {}
 
-  display(): void {
-    this.displayState = '';
-  }
-
-  hide(): void {
-    this.displayState = 'hidden';
-  }
-
   download(): void {
     this.drawing.renderTo(this.renderCanvas, this.zoom);
     const link = this.downloadLink.nativeElement;
@@ -64,6 +57,6 @@ export class ModalSaveComponent implements OnInit {
     link.setAttribute('href', image);
     link.click();
 
-    this.hide();
+    this.modal.hide();
   }
 }

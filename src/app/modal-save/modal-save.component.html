@@ -1,5 +1,5 @@
-<div class="modal {{displayState}}">
-  <modal-header [title]="'Save'" (close)="hide()"></modal-header>
+<div class="modal {{modal.displayState}}">
+  <modal-header [title]="'Save'" [controller]="modal"></modal-header>
   <div class="modal-body">
     <ul>
       <li>

@@ -1,4 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { ModalController } from 'src/app/modal-controller';
 
 @Component({
   selector: 'modal-header',
@@ -7,9 +8,14 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 })
 export class HeaderComponent implements OnInit {
   @Input() title!: string;
-  @Output() close = new EventEmitter<void>();
+  @Input() controller!: ModalController;
+  @Output() modalClose = new EventEmitter<ModalController>();
 
   constructor() {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.controller.close.subscribe(
+      () => this.modalClose.emit(this.controller)
+    );
+  }
 }
