@@ -1,0 +1,21 @@
+.modal-header {
+  padding: 5px;
+  border-bottom: 1px solid #333;
+  background-color: rgba(200, 200, 200, 0.15);
+  box-shadow: 0 2px 5px 0 #3f3f3f;
+
+  & .modal-title {
+    font-size: 15px;
+  }
+
+  & .close {
+    float: right;
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+
+    &::after {
+      content: '✕';
+    }
+  }
+}

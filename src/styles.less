@@ -26,3 +26,37 @@ input, select {
   color: #ccc;
   border-radius: 1px;
 }
+
+input {
+  width: 65px;
+  height: 15px;
+  font-size: 13px;
+
+  &:focus {
+    outline: none;
+  }
+}
+
+.modal-container {
+  position: absolute;
+  overflow: visible;
+  top: 0;
+  left: 0;
+  width: 0;
+  height: 0;
+
+  & .modal {
+    position: absolute;
+    width: 500px;
+    top: 70px;
+    left: 325px;
+    border: 1px solid #333;
+    border-radius: 2px;
+    background-color: #444;
+    box-shadow: 1px 1px 5px 0 #333;
+  }
+
+  & .hidden {
+    display: none;
+  }
+}

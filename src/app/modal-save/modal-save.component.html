@@ -1,0 +1,24 @@
+<div class="modal {{displayState}}">
+  <app-modal-header [title]="'Save'" (close)="hide()"></app-modal-header>
+  <div class="modal-body">
+    <ul>
+      <li>
+        <label>Type</label>
+        <select [(ngModel)]="fileType">
+          <option *ngFor="let t of fileTypes" [ngValue]="t">
+            {{t.extension}}
+          </option>
+        </select>
+      </li>
+      <li><label>Name</label><input [(ngModel)]="fileName" /></li>
+      <li><label>Scale</label><app-zoom-selector [zoom]="zoom" (select)="zoom = $event"></app-zoom-selector></li>
+    </ul>
+  </div>
+  <div class="modal-footer">
+    <app-modal-action [action]="'download'" (click)="download()"></app-modal-action>
+  </div>
+</div>
+<div class="hidden">
+  <a #downloadLink></a>
+  <canvas #renderCanvas></canvas>
+</div>
