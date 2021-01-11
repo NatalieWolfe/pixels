@@ -68,6 +68,15 @@ export class Drawing {
     this._drawPixelsTo(drawing._context);
   }
 
+  copyTo(drawing: Drawing) {
+    drawing._clear();
+    for (const [y, row] of this._pixels) {
+      for (const [x, color] of row) {
+        drawing.setColor({x, y}, color);
+      }
+    }
+  }
+
   private _drawPixelsTo(context: CanvasRenderingContext2D) {
     for (const [y, row] of this._pixels) {
       for (const [x, color] of row) {
