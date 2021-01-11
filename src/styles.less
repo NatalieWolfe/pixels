@@ -19,21 +19,52 @@ body {
   flex-direction: column;
 }
 
-input, select {
+input, select, label.file-input {
+  font-family: Arial, Helvetica, sans-serif;
   box-shadow: inset 0 0 3px 0 #333;
   border: 1px solid #333;
+  border-radius: 1px;
   background-color: #444;
   color: #ccc;
-  border-radius: 1px;
+  padding: 1px 2px;
 }
 
-input {
+input, label.file-input {
   width: 65px;
   height: 15px;
   font-size: 13px;
 
   &:focus {
     outline: none;
+  }
+}
+
+label.file-input {
+  display: inline-block;
+  width: 120px;
+  position: relative;
+  cursor: pointer;
+  padding-left: 50px;
+
+  & > input[type="file"] {
+    display: none;
+  }
+
+  &::before {
+    content: "Browse";
+    border-right: 1px solid #333;
+    padding: 1px 2px;
+    position: absolute;
+    top: 0;
+    left: 0;
+  }
+
+  &:hover::before {
+    background-color: rgba(200, 200, 200, 0.15);
+  }
+
+  &:active::before {
+    background-color: rgba(200, 200, 200, 0.05);
   }
 }
 
@@ -67,6 +98,10 @@ input {
           & label {
             display: inline-block;
             width: 50px;
+
+            &.file-input {
+              width: 120px;
+            }
           }
 
           & input {
@@ -79,5 +114,46 @@ input {
 
   & .hidden {
     display: none;
+  }
+}
+
+canvas.drawing {
+  border: 1px solid #333;
+  box-shadow: 0 0 5px 0 #444;
+
+  --canvas-zoom: 10;
+  --pixel-size: calc(1px * var(--canvas-zoom));
+
+  background-color: #777;
+
+  &.grid {
+    border-right: none;
+    border-bottom: none;
+    background-image: repeating-linear-gradient(
+      90deg,
+     transparent 0,transparent calc(var(--pixel-size) - 1px),
+      #333 calc(var(--pixel-size) - 1px), #333 var(--pixel-size),
+     transparent var(--pixel-size)
+    ), repeating-linear-gradient(
+      180deg,
+     transparent 0,transparent calc(var(--pixel-size) - 1px),
+      #333 calc(var(--pixel-size) - 1px), #333 var(--pixel-size),
+     transparent var(--pixel-size)
+    );
+  }
+
+  &.checkerboard {
+    background-image:
+      linear-gradient(45deg, #666 25%, transparent 25%),
+      linear-gradient(-45deg, #666 25%, transparent 25%),
+      linear-gradient(45deg, transparent 75%, #666 75%),
+      linear-gradient(-45deg, transparent 75%, #666 75%);
+
+    background-size: calc(var(--pixel-size) * 2) calc(var(--pixel-size) * 2);
+    background-position:
+      0 0,
+      0 var(--pixel-size),
+      var(--pixel-size) calc(var(--pixel-size) * -1),
+      calc(var(--pixel-size) * -1) 0px;
   }
 }

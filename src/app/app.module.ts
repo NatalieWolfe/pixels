@@ -8,6 +8,7 @@ import { CanvasComponent } from './canvas/canvas.component';
 import { ColorPickerComponent } from './color-picker/color-picker.component';
 import { EditorComponent } from './editor/editor.component';
 import { HeaderComponent } from './modal/header/header.component';
+import { ModalLoadComponent } from './modal-load/modal-load.component';
 import { ModalNewComponent } from './modal-new/modal-new.component';
 import { ModalSaveComponent } from './modal-save/modal-save.component';
 import { ToolButtonComponent } from './tool-button/tool-button.component';
@@ -21,6 +22,7 @@ import { ZoomSelectorComponent } from './zoom-selector/zoom-selector.component';
     ColorPickerComponent,
     EditorComponent,
     HeaderComponent,
+    ModalLoadComponent,
     ModalNewComponent,
     ModalSaveComponent,
     ToolButtonComponent,

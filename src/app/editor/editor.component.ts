@@ -2,7 +2,7 @@ import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 
 import { CanvasComponent } from '../canvas/canvas.component';
 import { Color } from '../color';
-import { Dimensions } from '../drawing';
+import { Dimensions, Drawing } from '../drawing';
 import { KeyBinding } from '../key-binding';
 import { ModalController } from '../modal-controller';
 import { ModalNewComponent } from '../modal-new/modal-new.component';
@@ -23,10 +23,12 @@ const TOOL_KEY_LAYOUT = [
 export class EditorComponent implements OnInit {
   @ViewChild('canvas', {static: true})
   canvas!: CanvasComponent;
-  @ViewChild('saveModal', {static: true})
-  saveModal!: ModalSaveComponent;
+  @ViewChild('loadModal', {static: true})
+  loadModal!: ModalNewComponent;
   @ViewChild('newModal', {static: true})
   newModal!: ModalNewComponent;
+  @ViewChild('saveModal', {static: true})
+  saveModal!: ModalSaveComponent;
 
   dimensions!: Dimensions;
   color: Color;
@@ -46,6 +48,7 @@ export class EditorComponent implements OnInit {
 
     this.keyBindings.set({ctrlKey: true, code: 'KeyN'}, this.openNew);
     this.keyBindings.set({altKey: true, code: 'KeyN'}, this.openNew);
+    this.keyBindings.set({ctrlKey: true, code: 'KeyO'}, this.openLoad);
     this.keyBindings.set({ctrlKey: true, code: 'KeyS'}, this.openSave);
     this.keyBindings.set({ctrlKey: true, code: 'KeyR'}, this.resetCanvas);
   }
@@ -56,6 +59,12 @@ export class EditorComponent implements OnInit {
 
   onColorPicked(color: Color) {
     this.color = color;
+  }
+
+  onLoadDrawing(drawing: Drawing) {
+    const {width, height} = drawing;
+    this.dimensions = {width, height};
+    this.canvas.drawing = drawing;
   }
 
   onNewDrawing(dimensions: Dimensions) {
@@ -100,12 +109,16 @@ export class EditorComponent implements OnInit {
     };
   }
 
-  openSave() {
-    this.activateModal(this.saveModal.modal);
+  openLoad() {
+    this.activateModal(this.loadModal.modal);
   }
 
   openNew() {
     this.activateModal(this.newModal.modal);
+  }
+
+  openSave() {
+    this.activateModal(this.saveModal.modal);
   }
 
   resetCanvas() {

@@ -1,11 +1,8 @@
 import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
-import { Drawing } from '../drawing';
-import { ModalController } from '../modal-controller';
 
-type FileType = {
-  mime: string;
-  extension: string;
-};
+import { Drawing } from '../drawing';
+import { FileType, fileTypes } from '../file-types';
+import { ModalController } from '../modal-controller';
 
 @Component({
   selector: 'app-modal-save',
@@ -20,10 +17,7 @@ export class ModalSaveComponent implements OnInit {
 
   @Input() drawing!: Drawing;
 
-  readonly fileTypes: FileType[] = [
-    {mime: 'image/png', extension: '.png'},
-    {mime: 'image/jpeg', extension: '.jpg'}
-  ];
+  readonly fileTypes = fileTypes;
 
   modal = new ModalController();
   fileName: string = 'sprite.png';

@@ -1,0 +1,18 @@
+<div class="modal {{modal.displayState}}">
+  <modal-header [title]="'Load'" [controller]="modal"></modal-header>
+  <div class="modal-body">
+    <label class="file-input">
+      &nbsp;{{fileName}}
+      <input #fileInput type="file" (change)="onFileChange()" />
+    </label>
+    <div id="preview-canvas">
+      <canvas #previewCanvas width="400" height="400" class="drawing checkerboard"></canvas>
+    </div>
+    <div class="preview-info">
+      Preview ({{zoomRatio}})
+    </div>
+  </div>
+  <div class="modal-footer">
+    <modal-action [action]="'load'" (click)="load()"></modal-action>
+  </div>
+</div>

@@ -8,6 +8,7 @@
   </div>
 </div>
 <div class="modal-container" (modalClose)="closeModal()">
-  <app-modal-save #saveModal [drawing]="canvas.drawing"></app-modal-save>
+  <app-modal-load #loadModal (loaded)="onLoadDrawing($event)"></app-modal-load>
   <app-modal-new #newModal (create)="onNewDrawing($event)"></app-modal-new>
+  <app-modal-save #saveModal [drawing]="canvas.drawing"></app-modal-save>
 </div>
