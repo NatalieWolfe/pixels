@@ -49,8 +49,15 @@ export class CanvasComponent implements OnInit {
   }
   private _dimensions!: Dimensions;
 
+  get drawing(): Drawing { return this._drawing; }
+  set drawing(drawing: Drawing) {
+    const {width, height} = drawing;
+    this.dimensions = {width, height};
+    drawing.copyTo(this.drawing);
+  }
+  private _drawing!: Drawing;
+
   zoom: number = 10;
-  drawing!: Drawing;
 
   private state: State = State.IDLE;
   private mousePanStart = {
@@ -66,7 +73,7 @@ export class CanvasComponent implements OnInit {
   }
 
   reset() {
-    this.drawing = new Drawing(this.dimensions, this.zoom, this.canvasElement);
+    this._drawing = new Drawing(this.dimensions, this.zoom, this.canvasElement);
 
     const style = this.containerElement.nativeElement.style;
     style.setProperty('--canvas-width', `${this.dimensions.width}px`);
